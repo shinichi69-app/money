@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Debt Analyzer & Payoff Simulator - ระบบวิเคราะห์และวางแผนปลดหนี้อัจฉริยะ</title>
+    <title>Debt Analyzer & Payoff Simulator Pro</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -13,10 +13,10 @@
                 extend: {
                     colors: {
                         dark: {
-                            900: '#0a0f1d',
-                            800: '#111827',
-                            700: '#1f2937',
-                            600: '#374151'
+                            900: '#070a13',
+                            800: '#0d1322',
+                            700: '#172033',
+                            600: '#25324d'
                         },
                         neon: {
                             cyan: '#06b6d4',
@@ -27,7 +27,7 @@
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif']
+                        sans: ['Inter', 'Prompt', 'sans-serif']
                     }
                 }
             }
@@ -43,140 +43,142 @@
         body {
             font-family: 'Prompt', 'Inter', sans-serif;
         }
-        /* Custom scrollbar for tactical UI */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #0a0f1d;
+            background: #070a13;
         }
         ::-webkit-scrollbar-thumb {
-            background: #374151;
+            background: #25324d;
             border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #4b5563;
+            background: #374151;
         }
-        .glow-effect {
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+        .glow-cyan {
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
+        }
+        .glow-emerald {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.15);
         }
         .glow-rose {
-            box-shadow: 0 0 20px rgba(244, 63, 94, 0.15);
+            box-shadow: 0 0 25px rgba(244, 63, 94, 0.15);
         }
     </style>
 </head>
 <body class="bg-dark-900 text-slate-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
 
-    <!-- Top Navigation Header -->
-    <header class="border-b border-slate-800 bg-dark-800/80 backdrop-blur sticky top-0 z-50">
+    <!-- Header Navigation -->
+    <header class="border-b border-slate-800 bg-dark-800/90 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                    <i class="fa-solid fa-shield-halved text-dark-900 text-lg font-bold"></i>
+                    <i class="fa-solid fa-chart-pie text-dark-900 text-lg font-bold"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">Debt Analyzer Pro</h1>
-                    <p class="text-xs text-slate-400">ระบบจำลองและวางแผนกลยุทธ์ปลดหนี้อัจฉริยะ</p>
+                    <h1 class="text-base sm:text-lg font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">Debt Analyzer & Payoff Pro</h1>
+                    <p class="text-xs text-slate-400">ระบบจำลองวางแผนปลดหนี้ บันทึกอัตโนมัติด้วย LocalStorage</p>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
                 <button onclick="loadSampleData()" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-dark-700 hover:bg-slate-700 text-cyan-400 border border-slate-700 transition flex items-center space-x-1.5">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span class="hidden sm:inline">โหลดข้อมูลตัวอย่าง</span>
+                    <span class="hidden sm:inline">โหลดตัวอย่างหนี้</span>
                 </button>
                 <button onclick="clearAllData()" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 transition flex items-center space-x-1.5">
                     <i class="fa-solid fa-trash-can"></i>
-                    <span class="hidden sm:inline">รีเซ็ตข้อมูล</span>
+                    <span class="hidden sm:inline">ล้างข้อมูลทั้งหมด</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
+    <!-- Main Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
-        <!-- Section 1: Summary Dashboard Cards -->
+        <!-- Section 1: Dashboard Metric Cards -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- Total Debt -->
-            <div class="bg-dark-800 border border-slate-800 rounded-2xl p-5 glow-effect relative overflow-hidden">
-                <div class="absolute -right-4 -bottom-4 opacity-10 text-cyan-400 text-7xl font-bold">
+            <div class="bg-dark-800 border border-slate-800 rounded-2xl p-5 glow-cyan relative overflow-hidden">
+                <div class="absolute -right-3 -bottom-3 opacity-10 text-cyan-400 text-7xl font-bold">
                     <i class="fa-solid fa-wallet"></i>
                 </div>
                 <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">ยอดหนี้รวมทั้งหมด</div>
-                <div id="summaryTotalDebt" class="text-2xl sm:text-3xl font-bold text-cyan-400 mt-2">฿0.00</div>
+                <div id="metricTotalDebt" class="text-2xl sm:text-3xl font-bold text-cyan-400 mt-2">฿0.00</div>
                 <div class="text-xs text-slate-400 mt-1 flex items-center space-x-1">
                     <i class="fa-solid fa-list text-cyan-500"></i>
-                    <span id="summaryDebtCount">0 รายการหนี้</span>
+                    <span id="metricDebtCount">0 รายการหนี้</span>
                 </div>
             </div>
 
             <!-- Total Min Payment -->
             <div class="bg-dark-800 border border-slate-800 rounded-2xl p-5 relative overflow-hidden">
-                <div class="absolute -right-4 -bottom-4 opacity-10 text-amber-400 text-7xl font-bold">
+                <div class="absolute -right-3 -bottom-3 opacity-10 text-amber-400 text-7xl font-bold">
                     <i class="fa-solid fa-file-invoice-dollar"></i>
                 </div>
                 <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">ภาระผ่อนขั้นต่ำ/เดือน</div>
-                <div id="summaryTotalMin" class="text-2xl sm:text-3xl font-bold text-amber-400 mt-2">฿0.00</div>
+                <div id="metricTotalMin" class="text-2xl sm:text-3xl font-bold text-amber-400 mt-2">฿0.00</div>
                 <div class="text-xs text-slate-400 mt-1 flex items-center space-x-1">
                     <i class="fa-solid fa-calendar-days text-amber-500"></i>
                     <span>ยอดจ่ายขั้นต่ำรวมต่อเดือน</span>
                 </div>
             </div>
 
-            <!-- Average Interest Rate -->
-            <div class="bg-dark-800 border border-slate-800 rounded-2xl p-5 relative overflow-hidden">
-                <div class="absolute -right-4 -bottom-4 opacity-10 text-rose-400 text-7xl font-bold">
+            <!-- Weighted Avg Interest -->
+            <div class="bg-dark-800 border border-slate-800 rounded-2xl p-5 glow-rose relative overflow-hidden">
+                <div class="absolute -right-3 -bottom-3 opacity-10 text-rose-400 text-7xl font-bold">
                     <i class="fa-solid fa-percent"></i>
                 </div>
-                <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">อัตราดอกเบี้ยเฉลี่ย (ถ่วงน้ำหนัก)</div>
-                <div id="summaryAvgInterest" class="text-2xl sm:text-3xl font-bold text-rose-400 mt-2">0.00%</div>
+                <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">ดอกเบี้ยเฉลี่ย (ถ่วงน้ำหนัก)</div>
+                <div id="metricAvgInterest" class="text-2xl sm:text-3xl font-bold text-rose-400 mt-2">0.00%</div>
                 <div class="text-xs text-slate-400 mt-1 flex items-center space-x-1">
                     <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
-                    <span>คิดตามสัดส่วนยอดหนี้</span>
+                    <span>คิดตามสัดส่วนยอดหนี้จริง</span>
                 </div>
             </div>
 
-            <!-- Estimated Payoff Time (Default Avalanche) -->
-            <div class="bg-dark-800 border border-slate-800 rounded-2xl p-5 relative overflow-hidden glow-rose">
-                <div class="absolute -right-4 -bottom-4 opacity-10 text-emerald-400 text-7xl font-bold">
+            <!-- Payoff Time (Avalanche) -->
+            <div class="bg-dark-800 border border-slate-800 rounded-2xl p-5 glow-emerald relative overflow-hidden">
+                <div class="absolute -right-3 -bottom-3 opacity-10 text-emerald-400 text-7xl font-bold">
                     <i class="fa-solid fa-hourglass-half"></i>
                 </div>
                 <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">ปลดหนี้หมดใน (Avalanche)</div>
-                <div id="summaryPayoffTime" class="text-2xl sm:text-3xl font-bold text-emerald-400 mt-2">- เดือน</div>
+                <div id="metricPayoffTime" class="text-2xl sm:text-3xl font-bold text-emerald-400 mt-2">- เดือน</div>
                 <div class="text-xs text-slate-400 mt-1 flex items-center space-x-1">
                     <i class="fa-solid fa-circle-check text-emerald-500"></i>
-                    <span id="summaryInterestPaidTotal">รวมดอกเบี้ย: ฿0</span>
+                    <span id="metricTotalInterestPaid">รวมดอกเบี้ย: ฿0</span>
                 </div>
             </div>
         </section>
 
-        <!-- Section 2: Debt Management & Form (2 Columns on large screens) -->
+        <!-- Section 2: Form & Debt Management Table -->
         <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- Left Column: Add / Edit Debt Form -->
+            <!-- Left: Add/Edit Debt Form -->
             <div class="bg-dark-800 border border-slate-800 rounded-2xl p-6 h-fit space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-700/60 pb-3">
-                    <h2 id="formTitle" class="text-base font-semibold text-slate-200 flex items-center space-x-2">
+                    <h2 id="formTitleText" class="text-base font-semibold text-slate-200 flex items-center space-x-2">
                         <i class="fa-solid fa-circle-plus text-cyan-400"></i>
                         <span>เพิ่มรายการหนี้ใหม่</span>
                     </h2>
-                    <button id="cancelEditBtn" onclick="resetForm()" class="hidden text-xs text-slate-400 hover:text-rose-400 transition">ยกเลิกแก้ไข</button>
+                    <button id="cancelEditBtn" onclick="resetDebtForm()" class="hidden text-xs text-slate-400 hover:text-rose-400 transition">ยกเลิกแก้ไข</button>
                 </div>
 
                 <form id="debtForm" onsubmit="handleDebtFormSubmit(event)" class="space-y-4">
                     <input type="hidden" id="editIndex" value="-1">
                     
                     <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">ชื่อเจ้าหนี้ / รายการหนี้</label>
-                        <input type="text" id="debtName" required placeholder="เช่น LINE BK 33%, บัตรเครดิต A" 
+                        <label class="block text-xs font-medium text-slate-300 mb-1">ชื่อเจ้าหนี้ / บัญชีหนี้</label>
+                        <input type="text" id="debtName" required placeholder="เช่น LINE BK 33%, บัตรเครดิต KTC" 
                             class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition">
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-medium text-slate-300 mb-1">ยอดหนี้คงเหลือ (บาท)</label>
-                            <input type="number" id="debtBalance" required min="1" step="any" placeholder="50000" 
+                            <input type="number" id="debtBalance" required min="1" step="any" placeholder="45000" 
                                 class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition">
                         </div>
                         <div>
@@ -187,7 +189,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">ยอดผ่อนชำระขั้นต่ำต่อเดือน (บาท)</label>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">ยอดผ่อนขั้นต่ำต่อเดือน (บาท)</label>
                         <input type="number" id="debtMinPayment" required min="0" step="any" placeholder="1500" 
                             class="w-full bg-dark-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition">
                     </div>
@@ -199,22 +201,22 @@
                 </form>
             </div>
 
-            <!-- Right Column: Debt List Table -->
+            <!-- Right: Debt Management Table -->
             <div class="lg:col-span-2 bg-dark-800 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-4">
                 <div>
                     <div class="flex items-center justify-between border-b border-slate-700/60 pb-3 mb-4">
                         <h2 class="text-base font-semibold text-slate-200 flex items-center space-x-2">
                             <i class="fa-solid fa-list-check text-emerald-400"></i>
-                            <span>รายการหนี้ทั้งหมดของคุณ</span>
+                            <span>รายการหนี้ทั้งหมดในระบบ (บันทึกอัตโนมัติ)</span>
                         </h2>
                         <span id="debtCountBadge" class="text-xs bg-dark-700 text-cyan-400 px-2.5 py-1 rounded-full font-medium">0 รายการ</span>
                     </div>
 
-                    <div id="debtTableContainer" class="overflow-x-auto max-h-[380px] overflow-y-auto pr-1">
+                    <div id="tableScrollContainer" class="overflow-x-auto max-h-[380px] overflow-y-auto pr-1">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="text-xs text-slate-400 border-b border-slate-700/50 sticky top-0 bg-dark-800">
-                                    <th class="py-2.5 px-3 font-semibold">เจ้าหนี้</th>
+                                    <th class="py-2.5 px-3 font-semibold">เจ้าหนี้ / รายการ</th>
                                     <th class="py-2.5 px-3 font-semibold text-right">ยอดคงเหลือ</th>
                                     <th class="py-2.5 px-3 font-semibold text-right">ดอกเบี้ย (%/ปี)</th>
                                     <th class="py-2.5 px-3 font-semibold text-right">ขั้นต่ำ/ด.</th>
@@ -222,112 +224,105 @@
                                 </tr>
                             </thead>
                             <tbody id="debtTableBody" class="divide-y divide-slate-800/80 text-sm">
-                                <!-- Dynamic rows inserted via JavaScript -->
+                                <!-- Dynamic rows -->
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div id="emptyDebtState" class="hidden text-center py-12 text-slate-500">
+                <div id="emptyState" class="hidden text-center py-12 text-slate-500">
                     <i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-600"></i>
                     <p class="text-sm">ยังไม่มีรายการหนี้ในระบบ</p>
-                    <p class="text-xs mt-1">กรอกข้อมูลด้านซ้าย หรือคลิก "โหลดข้อมูลตัวอย่าง" เพื่อเริ่มต้นใช้งาน</p>
+                    <p class="text-xs mt-1">กรอกข้อมูลด้านซ้าย หรือคลิก "โหลดตัวอย่างหนี้" ด้านบนเพื่อทดสอบ</p>
                 </div>
             </div>
         </section>
 
-        <!-- Section 3: Simulator & Strategy Comparison -->
+        <!-- Section 3: Payoff Simulation & Strategy Comparison -->
         <section class="bg-dark-800 border border-slate-800 rounded-2xl p-6 space-y-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-700/60 pb-4 gap-4">
                 <div>
                     <h2 class="text-lg font-bold text-slate-100 flex items-center space-x-2">
                         <i class="fa-solid fa-chart-line text-cyan-400"></i>
-                        <span>เครื่องมือจำลองกลยุทธ์การปลดหนี้ (Payoff Simulator)</span>
+                        <span>เครื่องมือจำลองกลยุทธ์ปลดหนี้ (Payoff Simulator)</span>
                     </h2>
-                    <p class="text-xs text-slate-400 mt-1">เปรียบเทียบระหว่างวิธี Snowball (หนี้เล็กไปใหญ่) และ Avalanche (ดอกเบี้ยสูงไปต่ำ) พร้อมใส่เงินโปะเพิ่มรายเดือน</p>
+                    <p class="text-xs text-slate-400 mt-1">เปรียบเทียบ Snowball, Avalanche และการรวมหนี้ (Consolidation) พร้อมกำหนดเงินโปะเพิ่มรายเดือน</p>
                 </div>
 
-                <div class="flex items-center space-x-3 bg-dark-900 p-2 rounded-xl border border-slate-700">
-                    <label class="text-xs font-medium text-slate-300 whitespace-nowrap">เงินโปะเพิ่มต่อเดือน (฿):</label>
-                    <input type="number" id="extraMonthlyPayment" min="0" step="any" value="2000" oninput="runSimulation()"
-                        class="w-32 bg-dark-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-cyan-400 font-bold focus:outline-none focus:border-cyan-500 text-right">
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex items-center space-x-2 bg-dark-900 px-3 py-1.5 rounded-xl border border-slate-700">
+                        <label class="text-xs font-medium text-slate-300">เงินโปะเพิ่ม/เดือน (฿):</label>
+                        <input type="number" id="extraMonthly" min="0" step="any" value="2500" oninput="runSimulation()"
+                            class="w-28 bg-dark-800 border border-slate-700 rounded-lg px-2.5 py-1 text-sm text-cyan-400 font-bold focus:outline-none focus:border-cyan-500 text-right">
+                    </div>
+                    <div class="flex items-center space-x-2 bg-dark-900 px-3 py-1.5 rounded-xl border border-slate-700">
+                        <label class="text-xs font-medium text-slate-300">ดอกเบี้ยรวมหนี้ (%):</label>
+                        <input type="number" id="consolidationRate" min="1" max="30" step="0.5" value="15.0" oninput="runSimulation()"
+                            class="w-20 bg-dark-800 border border-slate-700 rounded-lg px-2.5 py-1 text-sm text-emerald-400 font-bold focus:outline-none focus:border-cyan-500 text-right">
+                    </div>
                 </div>
             </div>
 
-            <!-- Simulation Comparison Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Strategy Comparison Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
-                <!-- Snowball Strategy Card -->
-                <div class="bg-dark-900/80 border border-slate-700/80 rounded-2xl p-5 space-y-4 relative overflow-hidden">
+                <!-- Snowball Card -->
+                <div class="bg-dark-900/80 border border-slate-700/80 rounded-2xl p-5 space-y-3 relative overflow-hidden">
                     <div class="absolute top-0 right-0 bg-cyan-500/10 text-cyan-400 text-xs px-3 py-1 rounded-bl-xl font-medium border-l border-b border-cyan-500/20">
-                        Debt Snowball (ก้อนเล็กไปใหญ่)
+                        Debt Snowball
                     </div>
-                    <div class="flex items-center space-x-3 pt-2">
-                        <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-lg">
+                    <div class="flex items-center space-x-3 pt-1">
+                        <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-snowman"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-slate-200">วิธีเดบิต สโนว์บอล</h3>
-                            <p class="text-xs text-slate-400">เน้นสร้างกำลังใจ ปิดก้อนเล็กสุดก่อน</p>
+                            <h3 class="font-bold text-slate-200 text-sm">สโนว์บอล (ก้อนเล็กไปใหญ่)</h3>
+                            <p class="text-xs text-slate-400">สร้างกำลังใจ ปิดหนี้วงเงินน้อยก่อน</p>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-2 gap-3 pt-2">
-                        <div class="bg-dark-800 p-3 rounded-xl border border-slate-800">
-                            <div class="text-xs text-slate-400">เวลาหมดหนี้</div>
-                            <div id="snowballTime" class="text-xl font-bold text-cyan-400 mt-1">- เดือน</div>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <div class="bg-dark-800 p-2.5 rounded-xl border border-slate-800">
+                            <div class="text-[10px] text-slate-400">เวลาหมดหนี้</div>
+                            <div id="snowballTime" class="text-base font-bold text-cyan-400 mt-0.5">- เดือน</div>
                         </div>
-                        <div class="bg-dark-800 p-3 rounded-xl border border-slate-800">
-                            <div class="text-xs text-slate-400">ดอกเบี้ยรวมทั้งหมด</div>
-                            <div id="snowballInterest" class="text-xl font-bold text-slate-100 mt-1">฿0</div>
+                        <div class="bg-dark-800 p-2.5 rounded-xl border border-slate-800">
+                            <div class="text-[10px] text-slate-400">ดอกเบี้ยรวม</div>
+                            <div id="snowballInterest" class="text-base font-bold text-slate-100 mt-0.5">฿0</div>
                         </div>
                     </div>
-                    
-                    <div id="snowballSteps" class="text-xs text-slate-400 bg-dark-800/50 p-3 rounded-xl border border-slate-800 max-h-24 overflow-y-auto">
-                        ลำดับการโปะ: -
+                    <div id="snowballOrder" class="text-[11px] text-slate-400 bg-dark-800/50 p-2.5 rounded-xl border border-slate-800 max-h-20 overflow-y-auto">
+                        ลำดับ: -
                     </div>
                 </div>
 
-                <!-- Avalanche Strategy Card -->
-                <div class="bg-dark-900/80 border border-emerald-500/30 rounded-2xl p-5 space-y-4 relative overflow-hidden glow-effect">
+                <!-- Avalanche Card -->
+                <div class="bg-dark-900/80 border border-emerald-500/30 rounded-2xl p-5 space-y-3 relative overflow-hidden glow-cyan">
                     <div class="absolute top-0 right-0 bg-emerald-500/10 text-emerald-400 text-xs px-3 py-1 rounded-bl-xl font-medium border-l border-b border-emerald-500/20">
-                        Debt Avalanche (ดอกสูงไปต่ำ - แนะนำ)
+                        Debt Avalanche (แนะนำ)
                     </div>
-                    <div class="flex items-center space-x-3 pt-2">
-                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">
+                    <div class="flex items-center space-x-3 pt-1">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">
                             <i class="fa-solid fa-mountain-sun"></i>
                         </div>
                         <div>
-                            <h3 class="font-bold text-slate-200">วิธีเดบิต แอวาแลนช์</h3>
-                            <p class="text-xs text-slate-400">ประหยัดดอกเบี้ยสูงสุด ปิดก้อนดอกแพงสุดก่อน</p>
+                            <h3 class="font-bold text-slate-200 text-sm">แอวาแลนช์ (ดอกสูงไปต่ำ)</h3>
+                            <p class="text-xs text-slate-400">ประหยัดดอกเบี้ยสูงสุดตามคณิตศาสตร์</p>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-2 gap-3 pt-2">
-                        <div class="bg-dark-800 p-3 rounded-xl border border-slate-800">
-                            <div class="text-xs text-slate-400">เวลาหมดหนี้</div>
-                            <div id="avalancheTime" class="text-xl font-bold text-emerald-400 mt-1">- เดือน</div>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <div class="bg-dark-800 p-2.5 rounded-xl border border-slate-800">
+                            <div class="text-[10px] text-slate-400">เวลาหมดหนี้</div>
+                            <div id="avalancheTime" class="text-base font-bold text-emerald-400 mt-0.5">- เดือน</div>
                         </div>
-                        <div class="bg-dark-800 p-3 rounded-xl border border-slate-800">
-                            <div class="text-xs text-slate-400">ดอกเบี้ยรวมทั้งหมด</div>
-                            <div id="avalancheInterest" class="text-xl font-bold text-emerald-400 mt-1">฿0</div>
+                        <div class="bg-dark-800 p-2.5 rounded-xl border border-slate-800">
+                            <div class="text-[10px] text-slate-400">ดอกเบี้ยรวม</div>
+                            <div id="avalancheInterest" class="text-base font-bold text-emerald-400 mt-0.5">฿0</div>
                         </div>
                     </div>
-
-                    <div id="avalancheSteps" class="text-xs text-slate-400 bg-dark-800/50 p-3 rounded-xl border border-slate-800 max-h-24 overflow-y-auto">
-                        ลำดับการโปะ: -
+                    <div id="avalancheOrder" class="text-[11px] text-slate-400 bg-dark-800/50 p-2.5 rounded-xl border border-slate-800 max-h-20 overflow-y-auto">
+                        ลำดับ: -
                     </div>
                 </div>
 
-            </div>
-
-            <!-- Chart Section -->
-            <div class="bg-dark-900/80 border border-slate-700/80 rounded-2xl p-5 space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-semibold text-slate-200 flex items-center space-x-2">
-                        <i class="fa-solid fa-chart-area text-cyan-400"></i>
-                        <span>กราฟแสดงการลดลงของยอดหนี้รวมตามเวลา (เดือน)</span>
-                    </h3>
-                    <span class="text-xs text-slate-400">เปรียบเทียบ Snowball vs Avalanche</span>
-                </div>
-                <div class="relative h
+                <!-- Consolidation Card -->
+              
